@@ -1,10 +1,10 @@
 import Content from "./Content";
 import { Header } from "./Header";
-import Home from "./Home";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
+import TemplateSelection from "./TemplateSelection";
 
-export default function HomePage() {
+export default function TemplateSelectionPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -19,13 +19,10 @@ export default function HomePage() {
         } md:ml-72`}
       >
         <div className="flex flex-col flex-1">
-          <Header
-            texto={"Home | Histórico de Relatórios"}
-            userName="John Doe"
-          />
+          <Header texto={"Relatório | Templates"} userName="John Doe" />
 
           <Content>
-            <Home />
+            <TemplateSelection />
           </Content>
         </div>
       </div>

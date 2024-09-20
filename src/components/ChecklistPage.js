@@ -1,6 +1,6 @@
+import Checklist from "./Checklist";
 import Content from "./Content";
 import { Header } from "./Header";
-import Home from "./Home";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
 
@@ -20,12 +20,12 @@ export default function HomePage() {
       >
         <div className="flex flex-col flex-1">
           <Header
-            texto={"Home | Histórico de Relatórios"}
+            texto={"Relatório | Identificação"}
             userName="John Doe"
           />
 
           <Content>
-            <Home />
+            <Checklist />
           </Content>
         </div>
       </div>

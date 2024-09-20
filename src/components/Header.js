@@ -6,7 +6,7 @@ export const Header = ({ texto, userName }) => {
       <h2 className="text-lg lg:text-2xl font-semibold text-gray-700 pl-4 md:pl-6">
         {texto}
       </h2>
-      <div className="flex items-center space-x-4 pr-4 md:pr-6"> 
+      <div className="flex items-center space-x-4 pr-4 md:pr-6">
         <img
           className="w-10 h-10 lg:w-12 lg:h-12 rounded-full object-cover"
           src={avatar}

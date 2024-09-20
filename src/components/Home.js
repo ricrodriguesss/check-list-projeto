@@ -43,7 +43,6 @@ const Home = () => {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
       <main className="flex-1 p-4 lg:p-10">
-
         <section className="bg-white p-4 lg:p-6 rounded-lg shadow-md">
           <h3 className="text-lg lg:text-xl font-bold mb-4 text-center text-gray-700">
             Lista de Empresas
@@ -92,12 +91,22 @@ const Home = () => {
                     className="hover:bg-gray-100 cursor-pointer"
                     onClick={() => handleRowClick(empresa.id)}
                   >
-                    <td className="px-2 lg:px-4 py-2 border-b">{empresa.nome}</td>
+                    <td className="px-2 lg:px-4 py-2 border-b">
+                      {empresa.nome}
+                    </td>
                     <td className="px-2 lg:px-4 py-2 border-b">{empresa.id}</td>
-                    <td className="px-2 lg:px-4 py-2 border-b">{empresa.consultor}</td>
-                    <td className="px-2 lg:px-4 py-2 border-b">{empresa.prazo}</td>
-                    <td className="px-2 lg:px-4 py-2 border-b">{empresa.ultimaAtividade}</td>
-                    <td className="px-2 lg:px-4 py-2 border-b">{empresa.status}</td>
+                    <td className="px-2 lg:px-4 py-2 border-b">
+                      {empresa.consultor}
+                    </td>
+                    <td className="px-2 lg:px-4 py-2 border-b">
+                      {empresa.prazo}
+                    </td>
+                    <td className="px-2 lg:px-4 py-2 border-b">
+                      {empresa.ultimaAtividade}
+                    </td>
+                    <td className="px-2 lg:px-4 py-2 border-b">
+                      {empresa.status}
+                    </td>
                   </tr>
                 ))}
               </tbody>
