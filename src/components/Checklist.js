@@ -3,7 +3,6 @@ import checklistData from "../assets/texts/checklistData";
 import anexar from "../assets/images/anexar_button.png";
 import thumbs_up from "../assets/images/thumbs_up.png";
 import thumbs_down from "../assets/images/thumbs_down.png";
-import trash_icon from "../assets/images/trash_icon.png";
 
 const Checklist = ({ currentPage = 0, onNavigate }) => {
   const [responses, setResponses] = useState([]);
@@ -107,7 +106,7 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
                       placeholder="Comentários"
                     ></textarea>
                     <div className="flex items-center justify-between space-x-4">
-                      <label className="flex items-center space-x-2 cursor-pointer bg-green-500 text-white py-2 px-4 rounded-lg">
+                      <label className="flex items-center space-x-2 cursor-pointer bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg">
                         <img src={anexar} className="text-black h-4" alt="Anexar" />
                         <span>Anexar</span>
                         <input
@@ -120,7 +119,7 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
 
                       <div className="flex space-x-2">
                         <button
-                          className={`w-12 h-12 rounded-full flex items-center justify-center transition-transform ${
+                          className={`w-12 h-12 rounded-full flex hover:bg-green-600 items-center justify-center transition-transform ${
                             responses[index] === "yes"
                               ? "bg-green-600 scale-110"
                               : "bg-gray-200"
@@ -134,7 +133,7 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
                           />
                         </button>
                         <button
-                          className={`w-12 h-12 rounded-full flex items-center justify-center transition-transform ${
+                          className={`w-12 h-12 rounded-full flex hover:bg-red-600 items-center justify-center transition-transform ${
                             responses[index] === "no"
                               ? "bg-red-600 scale-110"
                               : "bg-gray-200"
@@ -161,23 +160,22 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
                               <img
                                 src={filePreview.preview}
                                 alt="Pré-visualização"
-                                className="text-black h-4 rounded-lg"
+                                className="h-20 w-20 object-cover rounded-lg"
                               />
                             ) : (
                               <div className="flex items-center space-x-2">
                                 <img
                                   src={anexar}
                                   alt="Arquivo"
-                                  className="h-8 w-8 object-contain"
+                                  className="h-4 object-contain"
                                 />
                                 <span>{filePreview.preview}</span>
                               </div>
                             )}
                             <button
                               onClick={() => handleFileRemove(index, fileIndex)}
-                              className="text-red-600 flex items-center space-x-1 hover:text-red-800"
+                              className="text-white bg-red-500 rounded-md p-2 flex items-center space-x-1 hover:bg-red-700"
                             >
-                              <img src={trash_icon} alt="Excluir" className="h-6 w-6" />
                               <span>Excluir</span>
                             </button>
                           </div>
