@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faLock,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.png";
 
 const LoginPage = ({ onLogin }) => {
@@ -8,10 +13,10 @@ const LoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     try {
       const response = await fetch("http://nag4wa.org:8000/user/login", {
@@ -31,17 +36,15 @@ const LoginPage = ({ onLogin }) => {
 
       const result = await response.json();
 
-
       localStorage.setItem("access_token", result.access_token);
       localStorage.setItem("refresh_token", result.refresh_token);
-
 
       if (onLogin) {
         onLogin(result);
       }
     } catch (error) {
       console.error("Erro ao enviar dados", error);
-      setError("Falha no login. Verifique suas credenciais e tente novamente."); 
+      setError("Falha no login. Verifique suas credenciais e tente novamente.");
     }
   };
 
@@ -55,10 +58,12 @@ const LoginPage = ({ onLogin }) => {
         />
         <form onSubmit={handleSubmit}>
           <legend className="text-lg font-bold text-left mb-6">Login</legend>
-          
 
           <div className="relative mb-4">
-            <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-4 text-gray-400" />
+            <FontAwesomeIcon
+              icon={faEnvelope}
+              className="absolute left-3 top-4 text-gray-400"
+            />
             <input
               type="email"
               name="email"
@@ -71,9 +76,11 @@ const LoginPage = ({ onLogin }) => {
             />
           </div>
 
-
           <div className="relative mb-4">
-            <FontAwesomeIcon icon={faLock} className="absolute left-3 top-4 text-gray-400" />
+            <FontAwesomeIcon
+              icon={faLock}
+              className="absolute left-3 top-4 text-gray-400"
+            />
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -93,7 +100,6 @@ const LoginPage = ({ onLogin }) => {
             </button>
           </div>
 
-
           <div className="flex items-center mb-4">
             <input
               type="checkbox"
@@ -107,7 +113,6 @@ const LoginPage = ({ onLogin }) => {
               Lembrar meus dados
             </label>
           </div>
-          
 
           <button
             type="submit"
@@ -115,7 +120,6 @@ const LoginPage = ({ onLogin }) => {
           >
             Entrar
           </button>
-
 
           {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
         </form>

@@ -54,7 +54,10 @@ function Sidebar({ isOpen, toggleSidebar }) {
       </aside>
 
       {isOpen && (
-        <div className="fixed inset-0 z-40 md:hidden" onClick={toggleSidebar}></div>
+        <div
+          className="fixed inset-0 z-40 md:hidden"
+          onClick={toggleSidebar}
+        ></div>
       )}
     </>
   );
