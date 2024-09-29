@@ -1,89 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import checklistData from "../assets/texts/checklistData";
 import anexar from "../assets/images/anexar_button.png";
 import thumbs_up from "../assets/images/thumbs_up.png";
 import thumbs_down from "../assets/images/thumbs_down.png";
 
-const Checklist = ({ currentPage = 0, onNavigate }) => {
-  const [responses, setResponses] = useState([]);
-  const [files, setFiles] = useState([]);
-  const [filePreviews, setFilePreviews] = useState([]);
-  const [page, setPage] = useState(currentPage);
-
+const Checklist = ({ currentPage, onNavigate, responses, onResponseUpdate, onFileChange, files, onFileRemove }) => {
   useEffect(() => {
-    if (currentPage >= 0 && currentPage < checklistData.length) {
-      setPage(currentPage);
-      setResponses(Array(checklistData[currentPage].length).fill(null));
-      setFiles(Array(checklistData[currentPage].length).fill([])); 
-      setFilePreviews(Array(checklistData[currentPage].length).fill([])); 
-    }
+    
   }, [currentPage]);
 
   const handleResponse = (index, response) => {
+    onResponseUpdate(index, response);
+  };
+
+  const handleCommentChange = (index, comment) => {
     const newResponses = [...responses];
-    newResponses[index] = response;
-    setResponses(newResponses);
+    newResponses[currentPage] = newResponses[currentPage] || [];
+    newResponses[currentPage][index] = { ...newResponses[currentPage][index], comment };
+    onResponseUpdate(index, { comment }); 
   };
 
   const handleFileChange = (index, event) => {
-    const newFiles = [...files];
-    const newPreviews = [...filePreviews];
-
     const selectedFiles = Array.from(event.target.files);
-
-    if (selectedFiles.length) {
-
-      newFiles[index] = [...newFiles[index], ...selectedFiles];
-
-
-      const previews = selectedFiles.map((file) => {
-        if (file.type.startsWith("image/")) {
-          return { preview: URL.createObjectURL(file), isImage: true };
-        } else {
-          return { preview: file.name, isImage: false };
-        }
-      });
-
-
-      newPreviews[index] = newPreviews[index] ? [...newPreviews[index], ...previews] : previews;
-    }
-
-    setFiles(newFiles);
-    setFilePreviews(newPreviews);
-  };
-
-  const handleFileRemove = (index, fileIndex) => {
-    const newFiles = [...files];
-    const newPreviews = [...filePreviews];
-
-    newFiles[index].splice(fileIndex, 1); 
-    newPreviews[index].splice(fileIndex, 1); 
-
-    setFiles(newFiles);
-    setFilePreviews(newPreviews);
+    onFileChange(index, selectedFiles);
   };
 
   const handleNextPage = () => {
-    if (page < checklistData.length - 1) {
-      onNavigate(page + 1);
-    } else {
-      console.error("Página não encontrada ou final da lista.");
+    if (currentPage < checklistData.length - 1) {
+      onNavigate(currentPage + 1);
     }
   };
 
   const handlePreviousPage = () => {
-    if (page > 0) {
-      onNavigate(page - 1);
+    if (currentPage > 0) {
+      onNavigate(currentPage - 1);
     }
   };
-
-  const handleFinalPageNavigation = () => {
-    onNavigate("conclusion");
-  };
-
-  if (!checklistData[page]) {
-    return <div>Carregando...</div>;
-  }
 
   return (
     <div className="flex justify-center bg-gray-100 min-h-screen">
@@ -93,7 +45,7 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
             Serviços de Alimentação - RDC 216/04 da ANVISA
           </h3>
           <div className="h-[60vh] pr-2 flex flex-col items-center">
-            {checklistData[page].map((item, index) => (
+            {checklistData[currentPage].map((item, index) => (
               <div key={index} className="w-full max-w-4xl">
                 <label className="text-lg text-gray-700 mb-2 block text-left">
                   {item}
@@ -104,6 +56,8 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
                     <textarea
                       className="w-full h-20 p-2 rounded-md resize-none bg-gray-300"
                       placeholder="Comentários"
+                      value={responses[currentPage]?.[index]?.comment || ""}
+                      onChange={(e) => handleCommentChange(index, e.target.value)}
                     ></textarea>
                     <div className="flex items-center justify-between space-x-4">
                       <label className="flex items-center space-x-2 cursor-pointer bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg">
@@ -116,70 +70,34 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
                           onChange={(e) => handleFileChange(index, e)}
                         />
                       </label>
-
                       <div className="flex space-x-2">
                         <button
-                          className={`w-12 h-12 rounded-full flex hover:bg-green-600 items-center justify-center transition-transform ${
-                            responses[index] === "yes"
-                              ? "bg-green-600 scale-110"
-                              : "bg-gray-200"
-                          }`}
-                          onClick={() => handleResponse(index, "yes")}
+                          className={`w-12 h-12 rounded-full flex hover:bg-green-600 items-center justify-center transition-transform ${responses[currentPage]?.[index]?.response === "yes" ? "bg-green-600 scale-110" : "bg-gray-200"}`}
+                          onClick={() => handleResponse(index, { response: "yes" })}
                         >
-                          <img
-                            src={thumbs_up}
-                            className="h-8 w-8 object-contain"
-                            alt="Certo"
-                          />
+                          <img src={thumbs_up} className="h-8 w-8 object-contain" alt="Certo" />
                         </button>
                         <button
-                          className={`w-12 h-12 rounded-full flex hover:bg-red-600 items-center justify-center transition-transform ${
-                            responses[index] === "no"
-                              ? "bg-red-600 scale-110"
-                              : "bg-gray-200"
-                          }`}
-                          onClick={() => handleResponse(index, "no")}
+                          className={`w-12 h-12 rounded-full flex hover:bg-red-600 items-center justify-center transition-transform ${responses[currentPage]?.[index]?.response === "no" ? "bg-red-600 scale-110" : "bg-gray-200"}`}
+                          onClick={() => handleResponse(index, { response: "no" })}
                         >
-                          <img
-                            src={thumbs_down}
-                            className="h-8 w-8 object-contain"
-                            alt="Errado"
-                          />
+                          <img src={thumbs_down} className="h-8 w-8 object-contain" alt="Errado" />
                         </button>
                       </div>
                     </div>
-
                     <div className="mt-4 space-y-2">
-                      {Array.isArray(filePreviews[index]) &&
-                        filePreviews[index].map((filePreview, fileIndex) => (
-                          <div
-                            key={fileIndex}
-                            className="flex items-center space-x-4 bg-gray-300 p-2 rounded-lg"
-                          >
-                            {filePreview.isImage ? (
-                              <img
-                                src={filePreview.preview}
-                                alt="Pré-visualização"
-                                className="h-20 w-20 object-cover rounded-lg"
-                              />
-                            ) : (
-                              <div className="flex items-center space-x-2">
-                                <img
-                                  src={anexar}
-                                  alt="Arquivo"
-                                  className="h-4 object-contain"
-                                />
-                                <span>{filePreview.preview}</span>
-                              </div>
-                            )}
-                            <button
-                              onClick={() => handleFileRemove(index, fileIndex)}
-                              className="text-white bg-red-500 rounded-md p-2 flex items-center space-x-1 hover:bg-red-700"
-                            >
-                              <span>Excluir</span>
-                            </button>
-                          </div>
-                        ))}
+                      {Array.isArray(files[currentPage]?.[index]) && files[currentPage][index].map((file, fileIndex) => (
+                        <div key={fileIndex} className="flex items-center space-x-4 bg-gray-300 p-2 rounded-lg">
+                          {file.type.startsWith("image/") ? (
+                            <img src={URL.createObjectURL(file)} alt="Pré-visualização" className="h-20 w-20 object-cover rounded-lg" />
+                          ) : (
+                            <span>{file.name}</span>
+                          )}
+                          <button onClick={() => onFileRemove(index, fileIndex)} className="text-white bg-red-500 rounded-md p-2 hover:bg-red-700">
+                            Excluir
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -190,16 +108,16 @@ const Checklist = ({ currentPage = 0, onNavigate }) => {
 
         <div className="flex justify-between w-full max-w-4xl">
           <button
-            className="bg-green-500 text-white py-2 px-4 sm:px-6 rounded-md shadow-md hover:bg-green-600 transition disabled:bg-gray-400"
+            className="bg-green-500 text-white py-2 px-4 sm:px-6 rounded-md shadow-md hover:bg-green-600 transition"
             onClick={handlePreviousPage}
-            disabled={page === 0}
+            disabled={currentPage === 0}
           >
             &lt; Retornar
           </button>
-          {page === checklistData.length - 1 ? (
+          {currentPage === checklistData.length - 1 ? (
             <button
               className="bg-green-500 text-white py-2 px-4 sm:px-6 rounded-md shadow-md hover:bg-green-600 transition"
-              onClick={handleFinalPageNavigation}
+              onClick={() => console.log("Concluir")}
             >
               Concluir
             </button>
