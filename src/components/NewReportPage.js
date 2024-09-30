@@ -2,7 +2,7 @@ import Content from "./Content";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
-import TemplateSelection from "./TemplateSelection";
+import NewReport from "./NewReport";
 
 export default function TemplateSelectionPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,10 +19,10 @@ export default function TemplateSelectionPage() {
         } md:ml-72`}
       >
         <div className="flex flex-col flex-1">
-          <Header texto={"Relatório | Templates"} userName="John Doe" />
+          <Header texto={"Relatório | Identificação"} userName="John Doe" />
 
           <Content>
-            <TemplateSelection />
+            <NewReport />
           </Content>
         </div>
       </div>
