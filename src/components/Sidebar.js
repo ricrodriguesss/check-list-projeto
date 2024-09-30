@@ -30,14 +30,18 @@ function Sidebar({ isOpen, toggleSidebar }) {
         <nav className="flex flex-col w-full space-y-4 px-6">
           <button
             className="w-full text-lg text-gray-800 py-2 rounded-lg hover:bg-green-500 hover:text-white transition"
-            onClick={() => navigate("/home")}
+            onClick={() => {
+              navigate("/home");
+            }}
           >
             Home
           </button>
 
           <button
             className="w-full text-lg text-gray-800 py-2 rounded-lg hover:bg-green-500 hover:text-white transition"
-            onClick={() => navigate("/selecionar-template")}
+            onClick={() => {
+              navigate("/selecionar-template");
+            }}
           >
             Gerar Relatório
           </button>
@@ -46,7 +50,9 @@ function Sidebar({ isOpen, toggleSidebar }) {
         <div className="mt-auto w-full px-6">
           <button
             className="w-full text-lg text-white bg-green-500 py-2 rounded-lg hover:bg-green-600 transition"
-            onClick={() => navigate("/")}
+            onClick={() => {
+              navigate("/");
+            }}
           >
             Logout
           </button>
@@ -56,7 +62,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
       {isOpen && (
         <div
           className="fixed inset-0 z-40 md:hidden"
-          onClick={toggleSidebar}
+          onClick={toggleSidebar} 
         ></div>
       )}
     </>

@@ -18,7 +18,7 @@ const Conclusion = () => {
 
   const handleSubmit = () => {
     alert("Comentário e arquivo enviados!");
-    navigate("PAGINA FINAL");
+    navigate("/relatorio-final");
   };
 
   return (
@@ -30,8 +30,8 @@ const Conclusion = () => {
           </h3>
           <div className="h-[60vh] pr-2 flex flex-col items-center">
             <div className="w-full max-w-4xl">
-              <label className="text-lg text-gray-700 mb-2 block text-left">
-                Observações adicionais:
+              <label className="text-lg text-gray-700 mb-2 block text-center">
+                Observações adicionais
               </label>
 
               <div className="mb-6 p-4 bg-gray-100 rounded-lg shadow-md w-full">

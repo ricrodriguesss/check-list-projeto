@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function ChecklistPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0); // Adicionando o estado para a página atual
+  const [currentPage, setCurrentPage] = useState(0);
   const [responses, setResponses] = useState([]);
   const [files, setFiles] = useState([]);
 

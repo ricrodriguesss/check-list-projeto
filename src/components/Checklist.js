@@ -14,7 +14,7 @@ const Checklist = ({
   files,
   onFileRemove,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {}, [currentPage]);
 
   const handleResponse = (index, response) => {
@@ -58,10 +58,10 @@ const Checklist = ({
           <div className="h-[60vh] pr-2 flex flex-col items-center">
             {checklistData[currentPage].map((item, index) => (
               <div key={index} className="w-full max-w-4xl">
-                <label className="text-lg text-gray-700 mb-2 block text-left">
+                <label className="text-lg text-gray-700 mb-2 block text-center">
                   {item}
                 </label>
-                <p className="text-left text-gray-400 mb-2">
+                <p className=" text-gray-400 mb-2 text-center">
                   Passo 3 | Obrigatório
                 </p>
                 <div className="mb-6 p-4 bg-gray-200 rounded-lg shadow-md w-full">
@@ -74,7 +74,7 @@ const Checklist = ({
                         handleCommentChange(index, e.target.value)
                       }
                     ></textarea>
-                    <div className="flex items-center justify-between space-x-4">
+                    <div className="flex items-center justify-between space-x-4 flex-wrap">
                       <label className="flex items-center space-x-2 cursor-pointer bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg">
                         <img
                           src={anexar}
@@ -91,7 +91,11 @@ const Checklist = ({
                       </label>
                       <div className="flex space-x-2">
                         <button
-                          className={`w-12 h-12 rounded-full flex hover:bg-green-600 items-center justify-center transition-transform ${responses[currentPage]?.[index]?.response === "yes" ? "bg-green-600 scale-110" : "bg-gray-200"}`}
+                          className={`w-12 h-12 rounded-full flex hover:bg-green-600 items-center justify-center transition-transform ${
+                            responses[currentPage]?.[index]?.response === "yes"
+                              ? "bg-green-600 scale-110"
+                              : "bg-gray-200"
+                          }`}
                           onClick={() =>
                             handleResponse(index, { response: "yes" })
                           }
@@ -103,7 +107,11 @@ const Checklist = ({
                           />
                         </button>
                         <button
-                          className={`w-12 h-12 rounded-full flex hover:bg-red-600 items-center justify-center transition-transform ${responses[currentPage]?.[index]?.response === "no" ? "bg-red-600 scale-110" : "bg-gray-200"}`}
+                          className={`w-12 h-12 rounded-full flex hover:bg-red-600 items-center justify-center transition-transform ${
+                            responses[currentPage]?.[index]?.response === "no"
+                              ? "bg-red-600 scale-110"
+                              : "bg-gray-200"
+                          }`}
                           onClick={() =>
                             handleResponse(index, { response: "no" })
                           }
@@ -121,7 +129,7 @@ const Checklist = ({
                         files[currentPage][index].map((file, fileIndex) => (
                           <div
                             key={fileIndex}
-                            className="flex items-center space-x-4 bg-gray-300 p-2 rounded-lg"
+                            className="flex items-center space-x-4 bg-gray-300 p-2 rounded-lg flex-wrap"
                           >
                             {file.type.startsWith("image/") ? (
                               <img

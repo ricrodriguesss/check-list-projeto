@@ -41,9 +41,9 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-      <main className="flex-1 p-4 lg:p-10">
-        <section className="bg-white p-4 lg:p-6 rounded-lg shadow-md">
+    <div className="flex justify-center bg-gray-100 min-h-screen">
+      <main className="w-full flex flex-col items-center p-4 sm:p-6 rounded-lg">
+        <section className="bg-white p-4 lg:p-6 rounded-lg w-full">
           <h3 className="text-lg lg:text-xl font-bold mb-4 text-center text-gray-700">
             Lista de Empresas
           </h3>

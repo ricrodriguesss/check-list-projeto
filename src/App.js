@@ -6,6 +6,7 @@ import TemplateSelectionPage from "./components/TemplateSelectionPage";
 import ChecklistPage from "./components/ChecklistPage";
 import NewReportPage from "./components/NewReportPage";
 import ConclusionPage from "./components/ConclusionPage";
+import FinalPage from "./components/FinalPage";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         />
         <Route path="/relatorio-andamento" element={<ChecklistPage />} />
         <Route path="/relatorio-conclusao" element={<ConclusionPage />} />
+        <Route path="/relatorio-final" element={<FinalPage />} />
       </Routes>
     </Router>
   );
