@@ -37,7 +37,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
 
           <button
             className="w-full text-lg text-gray-800 py-2 rounded-lg hover:bg-green-500 hover:text-white transition"
-            onClick={() => navigate("/generate-report")}
+            onClick={() => navigate("/selecionar-template")}
           >
             Gerar Relatório
           </button>

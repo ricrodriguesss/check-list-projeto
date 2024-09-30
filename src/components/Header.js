@@ -1,6 +1,6 @@
 import avatar from "../assets/images/default.avatar.jpg";
 
-export const Header = ({ texto, userName }) => {
+const Header = ({ texto, userName }) => {
   return (
     <div className="flex justify-between items-center p-4 bg-gray-100">
       <h2 className="text-lg lg:text-2xl font-semibold text-gray-700 pl-4 md:pl-6">
@@ -17,3 +17,5 @@ export const Header = ({ texto, userName }) => {
     </div>
   );
 };
+
+export default Header;

@@ -1,6 +1,6 @@
 import Checklist from "./Checklist";
 import Content from "./Content";
-import { Header } from "./Header";
+import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
 
@@ -13,14 +13,20 @@ export default function ChecklistPage() {
   const handleResponseUpdate = (index, response) => {
     const newResponses = [...responses];
     newResponses[currentPage] = newResponses[currentPage] || [];
-    newResponses[currentPage][index] = { ...newResponses[currentPage][index], ...response };
+    newResponses[currentPage][index] = {
+      ...newResponses[currentPage][index],
+      ...response,
+    };
     setResponses(newResponses);
   };
 
   const handleFileChange = (index, selectedFiles) => {
     const newFiles = [...files];
     newFiles[currentPage] = newFiles[currentPage] || [];
-    newFiles[currentPage][index] = [...(newFiles[currentPage][index] || []), ...selectedFiles];
+    newFiles[currentPage][index] = [
+      ...(newFiles[currentPage][index] || []),
+      ...selectedFiles,
+    ];
     setFiles(newFiles);
   };
 
