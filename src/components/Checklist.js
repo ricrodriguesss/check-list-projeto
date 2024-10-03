@@ -1,51 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import checklistData from "../assets/texts/checklistData";
 import anexar from "../assets/images/anexar_button.png";
 import thumbs_up from "../assets/images/thumbs_up.png";
 import thumbs_down from "../assets/images/thumbs_down.png";
 import { useNavigate } from "react-router-dom";
+import { useReport } from "../contexts/ReportContext";
 
-const Checklist = ({
-  currentPage,
-  onNavigate,
-  responses,
-  onResponseUpdate,
-  onFileChange,
-  files,
-  onFileRemove,
-}) => {
+const Checklist = () => {
   const navigate = useNavigate();
-  useEffect(() => {}, [currentPage]);
+  const { report, updateResponses, updateComment, updateFiles, removeFile } = useReport(); 
 
-  const handleResponse = (index, response) => {
-    onResponseUpdate(index, response);
-  };
-
-  const handleCommentChange = (index, comment) => {
-    const newResponses = [...responses];
-    newResponses[currentPage] = newResponses[currentPage] || [];
-    newResponses[currentPage][index] = {
-      ...newResponses[currentPage][index],
-      comment,
-    };
-    onResponseUpdate(index, { comment });
-  };
-
-  const handleFileChange = (index, event) => {
-    const selectedFiles = Array.from(event.target.files);
-    onFileChange(index, selectedFiles);
-  };
+  const [currentPage, setCurrentPage] = useState(0); 
 
   const handleNextPage = () => {
     if (currentPage < checklistData.length - 1) {
-      onNavigate(currentPage + 1);
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePreviousPage = () => {
     if (currentPage > 0) {
-      onNavigate(currentPage - 1);
+      setCurrentPage(currentPage - 1);
     }
+  };
+
+  const handleComplete = () => {
+    navigate("/relatorio-conclusao");
   };
 
   return (
@@ -56,12 +36,12 @@ const Checklist = ({
             Serviços de Alimentação - RDC 216/04 da ANVISA
           </h3>
           <div className="h-[60vh] pr-2 flex flex-col items-center">
-            {checklistData[currentPage].map((item, index) => (
-              <div key={index} className="w-full max-w-4xl">
+            {checklistData[currentPage].map((item) => (
+              <div key={item.id} className="w-full max-w-4xl">
                 <label className="text-lg text-gray-700 mb-2 block text-center">
-                  {item}
+                  {item.question}
                 </label>
-                <p className=" text-gray-400 mb-2 text-center">
+                <p className="text-gray-400 mb-2 text-center">
                   Passo 3 | Obrigatório
                 </p>
                 <div className="mb-6 p-4 bg-gray-200 rounded-lg shadow-md w-full">
@@ -69,10 +49,10 @@ const Checklist = ({
                     <textarea
                       className="w-full h-20 p-2 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
                       placeholder="Comentários"
-                      value={responses[currentPage]?.[index]?.comment || ""}
-                      onChange={(e) =>
-                        handleCommentChange(index, e.target.value)
+                      value={
+                        report.responses.find((r) => r.questionId === item.id)?.comment || ""
                       }
+                      onChange={(e) => updateComment(item.id, e.target.value)}
                     ></textarea>
                     <div className="flex items-center justify-between space-x-4 flex-wrap">
                       <label className="flex items-center space-x-2 cursor-pointer bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg">
@@ -86,19 +66,19 @@ const Checklist = ({
                           type="file"
                           className="hidden"
                           multiple
-                          onChange={(e) => handleFileChange(index, e)}
+                          onChange={(e) =>
+                            updateFiles(item.id, Array.from(e.target.files))
+                          }
                         />
                       </label>
                       <div className="flex space-x-2">
                         <button
                           className={`w-12 h-12 rounded-full flex hover:bg-green-600 items-center justify-center transition-transform ${
-                            responses[currentPage]?.[index]?.response === "yes"
+                            report.responses.find((r) => r.questionId === item.id)?.response === "yes"
                               ? "bg-green-600 scale-110"
                               : "bg-gray-200"
                           }`}
-                          onClick={() =>
-                            handleResponse(index, { response: "yes" })
-                          }
+                          onClick={() => updateResponses(item.id, "yes")}
                         >
                           <img
                             src={thumbs_up}
@@ -108,13 +88,11 @@ const Checklist = ({
                         </button>
                         <button
                           className={`w-12 h-12 rounded-full flex hover:bg-red-600 items-center justify-center transition-transform ${
-                            responses[currentPage]?.[index]?.response === "no"
+                            report.responses.find((r) => r.questionId === item.id)?.response === "no"
                               ? "bg-red-600 scale-110"
                               : "bg-gray-200"
                           }`}
-                          onClick={() =>
-                            handleResponse(index, { response: "no" })
-                          }
+                          onClick={() => updateResponses(item.id, "no")}
                         >
                           <img
                             src={thumbs_down}
@@ -125,29 +103,28 @@ const Checklist = ({
                       </div>
                     </div>
                     <div className="mt-4 space-y-2">
-                      {Array.isArray(files[currentPage]?.[index]) &&
-                        files[currentPage][index].map((file, fileIndex) => (
-                          <div
-                            key={fileIndex}
-                            className="flex items-center space-x-4 bg-gray-300 p-2 rounded-lg flex-wrap"
+                      {report.responses.find((r) => r.questionId === item.id)?.files.map((file, fileIndex) => (
+                        <div
+                          key={fileIndex}
+                          className="flex items-center space-x-4 bg-gray-300 p-2 rounded-lg flex-wrap"
+                        >
+                          {file.type.startsWith("image/") ? (
+                            <img
+                              src={URL.createObjectURL(file)}
+                              alt="Pré-visualização"
+                              className="h-20 w-20 object-cover rounded-lg"
+                            />
+                          ) : (
+                            <span>{file.name}</span>
+                          )}
+                          <button
+                            onClick={() => removeFile(item.id, fileIndex)}
+                            className="text-white bg-red-500 rounded-md p-2 hover:bg-red-700"
                           >
-                            {file.type.startsWith("image/") ? (
-                              <img
-                                src={URL.createObjectURL(file)}
-                                alt="Pré-visualização"
-                                className="h-20 w-20 object-cover rounded-lg"
-                              />
-                            ) : (
-                              <span>{file.name}</span>
-                            )}
-                            <button
-                              onClick={() => onFileRemove(index, fileIndex)}
-                              className="text-white bg-red-500 rounded-md p-2 hover:bg-red-700"
-                            >
-                              Excluir
-                            </button>
-                          </div>
-                        ))}
+                            Excluir
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -162,12 +139,13 @@ const Checklist = ({
             onClick={handlePreviousPage}
             disabled={currentPage === 0}
           >
-            &lt; Retornar
+            Anterior
           </button>
+
           {currentPage === checklistData.length - 1 ? (
             <button
               className="bg-green-500 text-white py-2 px-4 sm:px-6 rounded-md shadow-md hover:bg-green-600 transition"
-              onClick={() => navigate("/relatorio-conclusao")}
+              onClick={handleComplete}
             >
               Concluir
             </button>
@@ -175,8 +153,9 @@ const Checklist = ({
             <button
               className="bg-green-500 text-white py-2 px-4 sm:px-6 rounded-md shadow-md hover:bg-green-600 transition"
               onClick={handleNextPage}
+              disabled={currentPage === checklistData.length - 1}
             >
-              Avançar &gt;
+              Próximo
             </button>
           )}
         </div>

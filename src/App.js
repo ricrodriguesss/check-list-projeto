@@ -2,11 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
-import TemplateSelectionPage from "./components/TemplateSelectionPage";
-import ChecklistPage from "./components/ChecklistPage";
-import NewReportPage from "./components/NewReportPage";
-import ConclusionPage from "./components/ConclusionPage";
-import FinalPage from "./components/FinalPage";
+import ReportRoutes from "./contexts/ReportRoutes";
 
 const App = () => {
   return (
@@ -14,14 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/novo-relatorio" element={<NewReportPage />} />
-        <Route
-          path="/selecionar-template"
-          element={<TemplateSelectionPage />}
-        />
-        <Route path="/relatorio-andamento" element={<ChecklistPage />} />
-        <Route path="/relatorio-conclusao" element={<ConclusionPage />} />
-        <Route path="/relatorio-final" element={<FinalPage />} />
+        <Route path="/*" element={<ReportRoutes />} />
       </Routes>
     </Router>
   );

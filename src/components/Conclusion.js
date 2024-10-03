@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useReport } from "../contexts/ReportContext";
 import anexar from "../assets/images/anexar_button.png";
 
 const Conclusion = () => {
   const [comment, setComment] = useState("");
   const [files, setFiles] = useState([]);
+  const {
+    updateConclusionData,
+  } = useReport();
   const navigate = useNavigate();
 
   const handleFileChange = (event) => {
@@ -17,6 +21,7 @@ const Conclusion = () => {
   };
 
   const handleSubmit = () => {
+    updateConclusionData({ comment, files });
     alert("Comentário e arquivo enviados!");
     navigate("/relatorio-final");
   };
