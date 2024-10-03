@@ -1,17 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useReport } from "../contexts/ReportContext";
 
 const TemplateSelection = () => {
+  const { setTemplateId } = useReport();
   const navigate = useNavigate();
 
   const templates = [
-    "Serviços de Alimentação - RDC 216/04 da ANVISA",
-    "Exemplo de template",
-    "Exemplo de template",
-    "Exemplo de template",
+    { id: 1, name: "Serviços de Alimentação - RDC 216/04 da ANVISA" },
+    { id: 2, name: "Exemplo de template 1" },
+    { id: 3, name: "Exemplo de template 2" },
+    { id: 4, name: "Exemplo de template 3" },
   ];
 
-  const handleTemplateClick = (templateName) => {
+  const handleTemplateClick = (templateId) => {
+    setTemplateId(templateId);
     navigate("/novo-relatorio");
   };
 
@@ -22,13 +25,13 @@ const TemplateSelection = () => {
           Selecione um Template
         </h3>
         <div className="flex flex-col space-y-4 w-full max-w-lg items-center">
-          {templates.map((template, index) => (
+          {templates.map((template) => (
             <p
-              key={index}
-              onClick={() => handleTemplateClick(template)}
+              key={template.id}
+              onClick={() => handleTemplateClick(template.id)}
               className="text-gray-400 text-lg hover:text-black cursor-pointer"
             >
-              {template}
+              {template.name}
             </p>
           ))}
         </div>

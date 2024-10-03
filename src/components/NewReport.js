@@ -1,9 +1,26 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useReport } from "../contexts/ReportContext";
 
 export default function NewReport() {
+  const { updateReportData } = useReport();
+  const [formData, setFormData] = useState({
+    nomeFantasia: "",
+    endereco: "",
+    dataConsulta: "",
+    responsavelOperacional: "",
+    consultorTecnico: "",
+  });
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateReportData(formData);
     navigate("/relatorio-andamento");
   };
 
@@ -25,6 +42,8 @@ export default function NewReport() {
               type="text"
               id="nomeFantasia"
               name="nomeFantasia"
+              value={formData.nomeFantasia}
+              onChange={handleChange}
               required
               className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -41,6 +60,8 @@ export default function NewReport() {
               type="text"
               id="endereco"
               name="endereco"
+              value={formData.endereco}
+              onChange={handleChange}
               required
               className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -57,6 +78,8 @@ export default function NewReport() {
               type="date"
               id="dataConsulta"
               name="dataConsulta"
+              value={formData.dataConsulta}
+              onChange={handleChange}
               required
               className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -73,6 +96,8 @@ export default function NewReport() {
               type="text"
               id="responsavelOperacional"
               name="responsavelOperacional"
+              value={formData.responsavelOperacional}
+              onChange={handleChange}
               required
               className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -89,6 +114,8 @@ export default function NewReport() {
               type="text"
               id="consultorTecnico"
               name="consultorTecnico"
+              value={formData.consultorTecnico}
+              onChange={handleChange}
               required
               className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
